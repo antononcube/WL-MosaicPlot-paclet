@@ -1,7 +1,9 @@
 # MosaicPlot WL paclet
-WolframLanguage (aka Mathematica) for mosaic plots over datasets or lists of records.
 
-The paclet provides the function MosaicPlot that summarizes the conditional probabilities 
+Wolfram Language (aka Mathematica) paclet for mosaic plots over datasets or lists of records.
+
+The [paclet](https://resources.wolframcloud.com/PacletRepository/resources/AntonAntonov/MosaicPlot/) 
+provides the function MosaicPlot that summarizes the conditional probabilities 
 of co-occurrence of categorical values in a Dataset object or a list of records of the same length.
 
 - If a list of records is given to MosaicPlot then the list is assumed to be a full array and the columns to represent categorical values.
