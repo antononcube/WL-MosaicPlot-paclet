@@ -1,4 +1,4 @@
-# WL-MosaicPlot-paclet
+# MosaicPlot WL paclet
 WolframLanguage (aka Mathematica) for mosaic plots over datasets or lists of records.
 
 The paclet provides the function MosaicPlot that summarizes the conditional probabilities 
