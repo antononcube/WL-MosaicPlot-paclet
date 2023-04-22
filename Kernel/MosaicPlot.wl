@@ -14,6 +14,7 @@ start the rectangle splitting. MosaicPlot also takes all the options of Graphics
 MosaicPlotTooltipTable::usage = "MosaicPlotTriePathTable[triePath:{{catVal_?AtomQ,prob_?NumberQ}..}] makes a table \
 of conditional probabilities from a trie path (suitable to be the second argument of Tooltip.)";
 
+PacletInstall["AntonAntonov`TriesWithFrequencies`", AllowVersionUpdate -> False];
 
 (* ::Section:: *)
 (*Definitions*)
@@ -118,7 +119,7 @@ MakeTooltipTable[triePath_] :=
       t =
           DeleteCases[
             Join @@ Table[{triePath[[1 ;; i, 1]], triePath[[i + 1 ;; j, 1]],
-              Apply[Times, triePath[[i ;; j, 2]]]/triePath[[i, 2]]},
+              Apply[Times, triePath[[i ;; j, 2]]] / triePath[[i, 2]]},
               {j, 2, Length[triePath]}, {i, 1, j - 1}],
             {}, 3];
 
@@ -159,14 +160,14 @@ TrieMosaicRec[trie_, triePath_, posPath_, r_Rectangle,
             True, Blend[colors, posPath[[colorInds]]]
           ], t}
         ],
-      (*ELSE*)
+        (*ELSE*)
         rs = RectanglePartition[trie, r, axis, "Gap" -> gap, "ZeroWidth" -> zwidth];
         If[axis == "x", t = Select[rs, #[[1, 2]] == c || #[[2, 2]] == c &];
         If[Length[t] == Length[rs],
           AppendTo[LABELS,
             MapThread[Text[Style[#1, labelStyle], {Mean[{#2[[1, 1]], #2[[2, 1]]}], c}, If[side === Top, -{0, 2}, {0, 2}],
               xLabelRotation] &, {Rest[trie][[All, 1, 1]], rs}]]],
-        (*ELSE*)
+          (*ELSE*)
           t = Select[rs, #[[1, 1]] == c || #[[2, 1]] == c &];
           If[Length[t] == Length[rs],
             AppendTo[LABELS,
@@ -177,9 +178,9 @@ TrieMosaicRec[trie_, triePath_, posPath_, r_Rectangle,
         MapThread[
           TrieMosaicRec[#1, Append[triePath, trie[[1]]], Append[posPath, #3], #2,
             axis /. {"x" -> "y", "y" -> "x"},
-            side /. SIDEChangeRules, gap*gapFactor, gapFactor,
+            side /. SIDEChangeRules, gap * gapFactor, gapFactor,
             zwidth, {xLabelRotation, yLabelRotation}, labelStyle,
-            addTooltipQ, colors, colorInds] &, {Rest[trie], rs, Range[Length[rs]]/Length[rs]}, 1]
+            addTooltipQ, colors, colorInds] &, {Rest[trie], rs, Range[Length[rs]] / Length[rs]}, 1]
       ]
     ];
 
@@ -193,10 +194,10 @@ MosaicPlot::ncr = "The value of the option ColorRules should be a list of rules 
 
 Clear[MosaicPlot];
 Options[MosaicPlot] =
-    Join[{"ColumnNames" -> None, "ColumnNamesOffset"->0.05, "Gap" -> 0.02, "GapFactor" -> 0.5,
+    Join[{"ColumnNames" -> None, "ColumnNamesOffset" -> 0.05, "Gap" -> 0.02, "GapFactor" -> 0.5,
       "ZeroProbability" -> 0.001, "FirstAxis" -> "y",
       "LabelRotation" -> {{1, 0}, {0, 1}}, "LabelStyle" -> {},
-      "ExpandLastColumn" -> False, "Tooltips"->True, ColorRules -> Automatic}, Options[Graphics]];
+      "ExpandLastColumn" -> False, "Tooltips" -> True, ColorRules -> Automatic}, Options[Graphics]];
 
 MosaicPlot[dataRecords_, opts : OptionsPattern[] ] :=
     Block[{dsetColNames, columnNames},
@@ -206,13 +207,13 @@ MosaicPlot[dataRecords_, opts : OptionsPattern[] ] :=
       dsetColNames = Normal[ Keys@First@dataRecords ];
 
       If[ TrueQ[columnNames === None || Length[Intersection[ columnNames, dsetColNames]] == 0 ],
-        MosaicPlot[ Values@Normal@ dataRecords, Sequence @@ Prepend[ {opts},  "ColumnNames"->dsetColNames] ],
-      (* ELSE *)
+        MosaicPlot[ Values@Normal@ dataRecords, Sequence @@ Prepend[ {opts}, "ColumnNames" -> dsetColNames] ],
+        (* ELSE *)
         dsetColNames = Intersection[ columnNames, dsetColNames];
-        MosaicPlot[ Values@Normal@ dataRecords[All, columnNames], Sequence @@ Prepend[ {opts},  "ColumnNames"->dsetColNames] ]
+        MosaicPlot[ Values@Normal@ dataRecords[All, columnNames], Sequence @@ Prepend[ {opts}, "ColumnNames" -> dsetColNames] ]
       ]
 
-    ]/;TrueQ[Head[dataRecords]===Dataset];
+    ] /; TrueQ[Head[dataRecords] === Dataset];
 
 MosaicPlot[dataRecords_, opts : OptionsPattern[]] :=
     Block[{trie, rs,
@@ -231,7 +232,7 @@ MosaicPlot[dataRecords_, opts : OptionsPattern[]] :=
       colors, colorInds, t, nvals},
 
 
-      If[! (ArrayQ[dataRecords] && Length[Dimensions[dataRecords]]==2),
+      If[! (ArrayQ[dataRecords] && Length[Dimensions[dataRecords]] == 2),
         Message[MosaicPlot::nargs];
         Return[{}]
       ];
@@ -280,7 +281,7 @@ MosaicPlot[dataRecords_, opts : OptionsPattern[]] :=
 
       If[Length[columnNames] == 0,
         frameLabels = {},
-      (*ELSE*)
+        (*ELSE*)
         frameLabelCoords = {{-frameLabelOffset, 0.5}, {0.5, 1 + frameLabelOffset}, {1 + frameLabelOffset, 0.5}, {0.5, -frameLabelOffset}};
         frameLabelRotation = {{0, 1}, {1, 0}, {0, -1}, {1, 0}};
         If[firstAxis == "x",
@@ -289,7 +290,7 @@ MosaicPlot[dataRecords_, opts : OptionsPattern[]] :=
         ];
         frameLabels = MapThread[Text[#1, #2, {0, 0}, #3] &,
           {If[Length[columnNames] >= 4, columnNames[[1 ;; 4]], Join[columnNames, Table["", {4 - Length[columnNames]}]]], frameLabelCoords, frameLabelRotation}];
-        frameLabels = Select[frameLabels, !TrueQ[#[[1]]==""]&];
+        frameLabels = Select[frameLabels, !TrueQ[#[[1]] == ""]&];
       ];
 
       If[TrueQ[colorRules === None], colorRules = {}];
@@ -307,7 +308,7 @@ MosaicPlot[dataRecords_, opts : OptionsPattern[]] :=
         trie = TriePruneNumericalLevel[trie, Dimensions[dataRecords][[2]]];
         trie = TrieNodeProbabilities[trie];
         trie = TrieAddMissingValues[trie, dataRecords[[All, 1 ;; Dimensions[dataRecords][[2]] - 1]]],
-      (* ELSE *)
+        (* ELSE *)
         trie = TrieNodeProbabilities[trie];
         trie = TrieAddMissingValues[trie, dataRecords]
       ];

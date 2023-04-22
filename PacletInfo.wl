@@ -7,15 +7,15 @@ PacletObject[
     "Creator" -> "Anton Antonov",
     "License" -> "MIT",
     "PublisherID" -> "AntonAntonov",
-    "Version" -> "1.0.3",
-    "WolframVersion" -> "11.3+",
+    "Version" -> "1.0.4",
+    "WolframVersion" -> "12.1+",
     "Extensions" -> {
       {
         "Kernel",
         "Root" -> "Kernel",
         "Context" -> {"AntonAntonov`MosaicPlot`"},
         "Symbols" -> {
-          "AntonAntonov`MosaicPlot`MakeTooltipTable",
+          "AntonAntonov`MosaicPlot`MosaicPlotTooltipTable",
           "AntonAntonov`MosaicPlot`MosaicPlot"
         }
       },
