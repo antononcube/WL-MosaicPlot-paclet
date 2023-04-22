@@ -14,7 +14,7 @@ start the rectangle splitting. MosaicPlot also takes all the options of Graphics
 MosaicPlotTooltipTable::usage = "MosaicPlotTriePathTable[triePath:{{catVal_?AtomQ,prob_?NumberQ}..}] makes a table \
 of conditional probabilities from a trie path (suitable to be the second argument of Tooltip.)";
 
-PacletInstall["AntonAntonov`TriesWithFrequencies`", AllowVersionUpdate -> False];
+PacletInstall["AntonAntonov/TriesWithFrequencies", AllowVersionUpdate -> False];
 
 (* ::Section:: *)
 (*Definitions*)
